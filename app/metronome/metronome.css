@@ -1,0 +1,122 @@
+@font-face {
+    font-family: 'JetbrainsMono';
+    src: url('../../public/fonts/ttf/JetBrainsMono-Regular.ttf');
+    font-weight: normal;
+}
+
+body { 
+    color: #d9d9d9; 
+}
+
+p { font-size: 1.5rem; }
+.headingContainer { text-align: center; }
+.heading2 { cursor: pointer; }
+
+.mainColumns {
+    margin-left: 10%;
+    margin-right: 10%;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+}
+
+.metronomeSpecs p { margin-top: 0; margin-bottom: 0; }
+.metronomeSpecs {
+    margin-left: 10%;
+    margin-right: 10%;
+}
+.specLabels { margin-right: 2%; } /* Add space between label and inputs */
+
+.timeSignature {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 5%;
+}
+
+.timeSignatureContainer {
+    display: flex;
+    height: fit-content;
+    align-items: center;
+}
+
+.timeSignature-selectors { /* The <select> tags themselves */
+    all: unset;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 1.25rem;
+    background-color: #1f1b1b;
+    color:#ffbd59;
+    width: 40px;
+    text-align: center;
+    border-radius: 10px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.timeSignature-selectors:open {
+    background-color: #312c2c;
+    color: #d9d9d9;
+}
+
+.timeSignatureContainer > p{
+    margin-left: 7%;
+    margin-right: 7%;
+}
+
+.tempo {
+    display: flex;
+}
+
+.tempoButtons {
+    border-radius: 100%;
+    transition: transform 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.tempoButtons:active {
+    transform: scale(1.15);
+}
+
+.tempoDisplayContainer {
+    margin-top: 5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 15vh;
+    background-color:#1f1b1b;
+    border-radius: 15px;
+}
+
+.playButton {
+    border-radius: 50%;
+    margin-right: 2%;
+    cursor: pointer;
+}
+
+#displayTempo {
+    font-family: 'JetbrainsMono', sans-serif;
+    font-size: 4.5rem;
+    color: #ffbd59;
+}
+#bpm { font-size: small;}
+
+.metronome {
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 5%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.circle {
+    width: 80px;
+    height: 80px;
+    background-color: #df9c39;
+    border-radius: 50%;
+}
+
+.line {
+    background-color: #000000;
+    height: 10px;
+    width: 100px;
+}
