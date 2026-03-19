@@ -12,25 +12,34 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 export default function Home() {
+    const [playImg, setPlayImg] = useState('/assets/play.png')
+    const [clicked, setClicked] = useState(false)
+    
     useEffect(() => {    
         handleRangeInput();
+        playMetronomeAudio();
         const cleanupButtons = handleTempoButtons();
+        const cleanupMetronome = playMetronomeAudio();
         return () => {
             cleanupButtons(); 
         };
+        
     }, []);
     
     // Toggles play/pause button images
-    const [playImg, setPlayImg] = useState('/assets/play.png')
-    const [clicked, setClicked] = useState(false)
+    
     function handlePlayClick() {
-        console.log("HI I WAS CLICKED")
-        setClicked(!clicked)
-        if (clicked) {
-            setPlayImg('/assets/pause.png')
-        } else {
-            setPlayImg('/assets/play.png')
-        }
+        console.log("Clicked: "+clicked)
+        
+        // Determine new image based on current clicked value
+        const newImage = clicked ? '/assets/play.png' : '/assets/pause.png';
+        setPlayImg(newImage);  // Set the image
+        
+        const newClicked = !clicked;  
+        setClicked(newClicked);
+        
+        console.log("Setting image to:", newImage); // This will show correctly
+        // Image will update on next render
     }
     
     return (
