@@ -22,6 +22,7 @@ export default function Home() {
         const cleanupMetronome = playMetronomeAudio();
         return () => {
             cleanupButtons(); 
+            cleanupMetronome();
         };
         
     }, []);

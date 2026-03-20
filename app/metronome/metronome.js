@@ -3,7 +3,6 @@ export function handleRangeInput() {
     const tempoDisplay = document.getElementById("displayTempo");
     tempoRange.addEventListener('change', function() {    
         tempoDisplay.innerHTML = this.value
-        console.log(this.value)
     })
 }
 
@@ -21,12 +20,12 @@ export function handleTempoButtons() {
     function incrementUp(range, display) {
         range.value++;
         display.innerHTML = range.value;
-        console.log(range.value)
+        tempoRange.dispatchEvent(new Event('change'));
     }
     function incrementDown(range, display) {
         range.value--;
         display.innerHTML = range.value;
-        console.log(range.value)
+        tempoRange.dispatchEvent(new Event('change'));
     }
     plus.addEventListener("click", handlePlusClick);
     minus.addEventListener("click", handleMinusClick);
@@ -41,6 +40,7 @@ export function handleTempoButtons() {
 
 export function playMetronomeAudio() {
     const playBtn = document.querySelector(".playButton")
+    const tempoRange = document.getElementById("tempoRange")
     
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
     const audioContext = new AudioContext();
@@ -50,8 +50,8 @@ export function playMetronomeAudio() {
     let isPlaying = false;  
     const lookahead = 0.1;
     const timeoutDelay = 30;
-
-    const scheduleBeep = time => {
+    
+    function scheduleBeep(time) {
         const osc = audioContext.createOscillator();
         osc.connect(audioContext.destination);
         osc.frequency.value = 300;
@@ -59,7 +59,7 @@ export function playMetronomeAudio() {
         osc.stop(time + 0.1);
     };
 
-    const schedule = () => {
+    function schedule() {
         while (nextStepTime < audioContext.currentTime + lookahead) {
             nextStepTime += timeBetweenSteps;
             scheduleBeep(nextStepTime);
@@ -67,7 +67,6 @@ export function playMetronomeAudio() {
     };
 
     function handleButtonClick() {
-        console.log("isPlaying: "+isPlaying)
         if (isPlaying) {
             // Stop
             clearInterval(interval);
@@ -82,11 +81,19 @@ export function playMetronomeAudio() {
             isPlaying = true;
         }
     }
+    
+    function handleBpmChange() {
+        const bpm = Number(document.getElementById("displayTempo").innerText);
+        timeBetweenSteps = 60 / bpm; 
+        console.log(bpm)
+    }
 
     playBtn.addEventListener("click", handleButtonClick);
+    tempoRange.addEventListener("change", handleBpmChange);
     
     return () => {
         playBtn.removeEventListener("click", handleButtonClick);
+        playBtn.removeEventListener("change", handleButtonClick);
         clearInterval(interval);
     };
 }
