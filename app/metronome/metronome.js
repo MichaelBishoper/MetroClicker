@@ -54,7 +54,7 @@ export function playMetronomeAudio() {
     function scheduleBeep(time) {
         const osc = audioContext.createOscillator();
         osc.connect(audioContext.destination);
-        osc.frequency.value = 300;
+        osc.frequency.value = 380;
         osc.start(time);
         osc.stop(time + 0.1);
     };
@@ -67,6 +67,7 @@ export function playMetronomeAudio() {
     };
 
     function handleButtonClick() {
+        console.log(isPlaying);
         if (isPlaying) {
             // Stop
             clearInterval(interval);
@@ -87,13 +88,23 @@ export function playMetronomeAudio() {
         timeBetweenSteps = 60 / bpm; 
         console.log(bpm)
     }
-
+    
+    function handleSpaceDown(e) {
+        if (e.code === 'Space' || e.code === 'Enter') {
+            e.preventDefault;
+            handleButtonClick();
+        }
+    }
+    
     playBtn.addEventListener("click", handleButtonClick);
     tempoRange.addEventListener("change", handleBpmChange);
+    window.addEventListener("keydown", (handleSpaceDown));
+    
     
     return () => {
         playBtn.removeEventListener("click", handleButtonClick);
-        playBtn.removeEventListener("change", handleButtonClick);
+        tempoRange.removeEventListener("change", handleBpmChange);
+        window.removeEventListener("keydown", handleSpaceDown);
         clearInterval(interval);
     };
 }

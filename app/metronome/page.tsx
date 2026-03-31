@@ -6,41 +6,49 @@ import './metronome.css'
 import {handleRangeInput} from './metronome'
 import { handleTempoButtons } from './metronome'
 import { playMetronomeAudio } from './metronome'
-import { useState } from 'react'
-import { useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'  
 import Link from 'next/link'
 
 export default function Home() {
     const [playImg, setPlayImg] = useState('/assets/play.png')
     const [clicked, setClicked] = useState(false)
+    const clickedRef = useRef(clicked)
+    
+    // Updates whenever clicked changes value
+    useEffect(() => {
+        clickedRef.current = clicked;    
+    }, [clicked]);
     
     useEffect(() => {    
+        
+        // Toggle the right play asset on enter or space
+        function onKeyDown(e: KeyboardEvent) {
+            if (e.code === 'Space' || e.code === 'Enter') {
+                const newImage = clickedRef.current ? '/assets/play.png' : '/assets/pause.png';
+                setPlayImg(newImage);  
+                setClicked(prev => !prev);
+            }
+        }
+        window.addEventListener('keydown', onKeyDown);
+        
         handleRangeInput();
-        playMetronomeAudio();
         const cleanupButtons = handleTempoButtons();
         const cleanupMetronome = playMetronomeAudio();
+        
         return () => {
             cleanupButtons(); 
-            cleanupMetronome();
+            cleanupMetronome(); 
+            window.removeEventListener('keydown', onKeyDown)
         };
         
     }, []);
     
     // Toggles play/pause button images
-    
     function handlePlayClick() {
-        console.log("Clicked: "+clicked)
-        
-        // Determine new image based on current clicked value
         const newImage = clicked ? '/assets/play.png' : '/assets/pause.png';
-        setPlayImg(newImage);  // Set the image
-        
-        const newClicked = !clicked;  
-        setClicked(newClicked);
-        
-        console.log("Setting image to:", newImage); // This will show correctly
-        // Image will update on next render
+        setPlayImg(newImage);  
+        setClicked(prev => !prev);
     }
     
     return (
@@ -113,18 +121,6 @@ export default function Home() {
                     <p id='displayTempo'>120</p>
                     <p id='bpm'>bpm</p>
                 </div>
-            </div>
-            <div className="metronome">
-                {/* <div className="circle">
-                </div>
-                <div className="circle">
-                </div>
-                <div className="circle">
-                </div>
-                <div className="circle">
-                </div>
-                <div className="line">
-                </div> */}
             </div>
     </div>
     )

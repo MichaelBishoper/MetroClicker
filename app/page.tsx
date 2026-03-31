@@ -6,7 +6,7 @@ import Link from 'next/link'
 export default function Home() {
   return (
     <div>
-      <Link href="https://github.com/MichaelBishoper">
+      <Link href="https://github.com/MichaelBishoper/MetroClicker">
         <Image 
           className='github'
           src="/assets/github.png"
